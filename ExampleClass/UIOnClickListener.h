@@ -6,14 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MMProxy.h"
-
-@interface UIOnClickListener : MMProxy
--(id)init;
-+(id)new;
-@end
-
-@interface UIClickTarget : NSObject
+@interface UIOnClickListener : NSObject
 -(IBAction)onClick:(id)sender;
 @end
 

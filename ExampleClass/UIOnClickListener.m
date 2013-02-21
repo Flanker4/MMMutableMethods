@@ -8,19 +8,6 @@
 #import "UIOnClickListener.h"
 
 @implementation UIOnClickListener
--(id) init{
-    UIClickTarget *obj=[[UIClickTarget new] autorelease];
-    return [self initWithObject:obj];
-}
-+(id)new{
-    return [[[self class] alloc] init];
-}
--(void)dealloc{
-    [super dealloc];
-}
-@end
-
-@implementation UIClickTarget
 -(IBAction)onClick:(id)sender{
     NSLog(@"default imp");
 }

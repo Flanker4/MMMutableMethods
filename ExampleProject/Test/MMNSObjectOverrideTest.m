@@ -6,7 +6,7 @@
 //
 
 #import "MMNSObjectOverrideTest.h"
-#import "NSObject+MMMutableMethod.h"
+#import "NSObject+MMAnonymousClass.h"
 
 @implementation MMNSObjectOverrideTest
 
@@ -42,10 +42,10 @@
     STAssertEquals([obj_ floatMethod:2.0f], 2.0f, @"Ошибка");
     
     [obj_ overrideMethod:@selector(floatMethod:) blockImp:^float(MMTestClass* selfObj,float prop){
-        return 5.0f;
+        return 200.0f;
     }];
     
-    STAssertEquals([obj_ floatMethod:10.0f], 5.0f, @"Ошибка");
+    STAssertEquals([obj_ floatMethod:10.0f], 200.0f, @"Ошибка");
     
 }
 
@@ -117,48 +117,17 @@
         return 10.0f;
     }];
     STAssertEquals([obj_ specialMethod:2.0f], 10.0f, @"Должен равнятся 10.0f");
-    [obj_ removeAllObjectMethods];
+    [self tearDown];
+    [self setUp];
+    STAssertEquals([obj_ specialMethod:2.0f], 2.0f, @"Должен равнятся 2.0f");
     
-    STAssertEquals([obj_ specialMethod:2.0f], 2.0f, @"Должен равнятся 2.0f, предыдущее переопределение должно быть уничтоженым");
+     
+    
     
 }
 
--(void) testAAOverridedMethodTimeEx{
-     float tmpResult=0.0f;
-    NSDate *methodStart = nil;
-    NSDate *methodFinish = nil;
-   
-    methodStart=[NSDate date];
-    tmpResult= [obj_ floatMethod:10.0f];
-    methodFinish=[NSDate date];
-    STAssertEquals(tmpResult, 10.0f, @"test");
-    NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:methodStart];
-    NSLog(@"Time original method %f",executionTime);
+-(void) AAOverridedMethodTimeEx{
     
-    [obj_ overrideMethod:@selector(floatMethod:) blockImp:^float(MMTestClass* selfObj,float param){
-        return param;
-    }];
-    methodStart=[NSDate date];
-    tmpResult= [obj_ floatMethod:10.0f];
-    methodFinish=[NSDate date];
-    STAssertEquals(tmpResult, 10.0f, @"test");
-    executionTime = [methodFinish timeIntervalSinceDate:methodStart];
-    NSLog(@"Time overrided method %f",executionTime);
-    
-    [obj_ removeAllObjectMethods];
-    methodStart=[NSDate date];
-    tmpResult= [obj_ floatMethod:10.0f];
-    methodFinish=[NSDate date];
-    executionTime = [methodFinish timeIntervalSinceDate:methodStart];
-    STAssertEquals(tmpResult, 10.0f, @"test");
-    NSLog(@"Time after overrided method %f",executionTime);
-    
-    methodStart=[NSDate date];
-    tmpResult= [obj_ notOverridedMethod:10.0f];
-    methodFinish=[NSDate date];
-    STAssertEquals(tmpResult, 10.0f, @"test");
-    executionTime = [methodFinish timeIntervalSinceDate:methodStart];
-    NSLog(@"Time other original  method %f",executionTime);
 }
 
 @end

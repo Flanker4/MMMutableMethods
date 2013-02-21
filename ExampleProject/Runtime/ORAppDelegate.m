@@ -6,7 +6,7 @@
 //
 
 #import "ORAppDelegate.h"
-#import "NSObject+MMMutableMethod.h"
+#import "NSObject+MMAnonymousClass.h"
 @implementation ORAppDelegate
 
 - (void)dealloc

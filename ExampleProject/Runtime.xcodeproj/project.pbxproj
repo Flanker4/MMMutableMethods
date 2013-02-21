@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0E3DCCE016C88A45006CF7E1 /* MMNSObjectOverrideTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA43C1D16C3D67A003B1E0E /* MMNSObjectOverrideTest.m */; };
-		0E964E4616C87CBD00345556 /* MMProxyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EC89C7B16C2C8FF00BD568F /* MMProxyTest.m */; };
 		0E9E766B16BD6D2E006DE834 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E9E766A16BD6D2D006DE834 /* UIKit.framework */; };
 		0E9E766D16BD6D2E006DE834 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E9E766C16BD6D2E006DE834 /* Foundation.framework */; };
 		0E9E766F16BD6D2E006DE834 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E9E766E16BD6D2E006DE834 /* CoreGraphics.framework */; };
@@ -23,10 +22,6 @@
 		0E9E768A16BD6D2E006DE834 /* ORViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E768916BD6D2E006DE834 /* ORViewController.m */; };
 		0EBBEB2816CBF5610042907B /* UIOnClickListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBBEB2116CBF5610042907B /* UIOnClickListener.m */; };
 		0EBBEB2916CBF5610042907B /* UIOnClickListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBBEB2116CBF5610042907B /* UIOnClickListener.m */; };
-		0EBBEB2A16CBF5610042907B /* MMProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBBEB2516CBF5610042907B /* MMProxy.m */; };
-		0EBBEB2B16CBF5610042907B /* MMProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBBEB2516CBF5610042907B /* MMProxy.m */; };
-		0EBBEB2C16CBF5610042907B /* NSObject+MMMutableMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBBEB2716CBF5610042907B /* NSObject+MMMutableMethod.m */; };
-		0EBBEB2D16CBF5610042907B /* NSObject+MMMutableMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBBEB2716CBF5610042907B /* NSObject+MMMutableMethod.m */; };
 		0EBBEB2F16CBF6AA0042907B /* Readme.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 0EBBEB2E16CBF6AA0042907B /* Readme.rtf */; };
 		0EBBEB3016CBF6AA0042907B /* Readme.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 0EBBEB2E16CBF6AA0042907B /* Readme.rtf */; };
 		0EC89C7116C2C8FF00BD568F /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EC89C7016C2C8FF00BD568F /* SenTestingKit.framework */; };
@@ -34,6 +29,8 @@
 		0EC89C7316C2C8FF00BD568F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E9E766C16BD6D2E006DE834 /* Foundation.framework */; };
 		0EC89C7916C2C8FF00BD568F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0EC89C7716C2C8FF00BD568F /* InfoPlist.strings */; };
 		0EC89C8416C2C96900BD568F /* MMTestClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EC89C8316C2C96800BD568F /* MMTestClass.m */; };
+		0ED8421216D60F9600F57553 /* NSObject+MMAnonymousClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED8421116D60F9600F57553 /* NSObject+MMAnonymousClass.m */; };
+		0ED8421316D60F9600F57553 /* NSObject+MMAnonymousClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED8421116D60F9600F57553 /* NSObject+MMAnonymousClass.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,21 +55,16 @@
 		0EA43C1D16C3D67A003B1E0E /* MMNSObjectOverrideTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMNSObjectOverrideTest.m; sourceTree = "<group>"; };
 		0EBBEB2016CBF5610042907B /* UIOnClickListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIOnClickListener.h; sourceTree = "<group>"; };
 		0EBBEB2116CBF5610042907B /* UIOnClickListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIOnClickListener.m; sourceTree = "<group>"; };
-		0EBBEB2316CBF5610042907B /* MMMutableMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMMutableMethod.h; sourceTree = "<group>"; };
-		0EBBEB2416CBF5610042907B /* MMProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMProxy.h; sourceTree = "<group>"; };
-		0EBBEB2516CBF5610042907B /* MMProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMProxy.m; sourceTree = "<group>"; };
-		0EBBEB2616CBF5610042907B /* NSObject+MMMutableMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MMMutableMethod.h"; sourceTree = "<group>"; };
-		0EBBEB2716CBF5610042907B /* NSObject+MMMutableMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MMMutableMethod.m"; sourceTree = "<group>"; };
 		0EBBEB2E16CBF6AA0042907B /* Readme.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; name = Readme.rtf; path = ../Readme.rtf; sourceTree = "<group>"; };
 		0EC89C6F16C2C8FF00BD568F /* Test.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Test.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EC89C7016C2C8FF00BD568F /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		0EC89C7616C2C8FF00BD568F /* Test-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Test-Info.plist"; sourceTree = "<group>"; };
 		0EC89C7816C2C8FF00BD568F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		0EC89C7A16C2C8FF00BD568F /* MMProxyTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MMProxyTest.h; sourceTree = "<group>"; };
-		0EC89C7B16C2C8FF00BD568F /* MMProxyTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MMProxyTest.m; sourceTree = "<group>"; };
 		0EC89C7D16C2C8FF00BD568F /* Test-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Test-Prefix.pch"; sourceTree = "<group>"; };
 		0EC89C8216C2C96800BD568F /* MMTestClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMTestClass.h; sourceTree = "<group>"; };
 		0EC89C8316C2C96800BD568F /* MMTestClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMTestClass.m; sourceTree = "<group>"; };
+		0ED8421016D60F9600F57553 /* NSObject+MMAnonymousClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+MMAnonymousClass.h"; path = "../../MMAnonymousClass/NSObject+MMAnonymousClass.h"; sourceTree = "<group>"; };
+		0ED8421116D60F9600F57553 /* NSObject+MMAnonymousClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+MMAnonymousClass.m"; path = "../../MMAnonymousClass/NSObject+MMAnonymousClass.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,7 +154,7 @@
 		0EBBEB1E16CBF53B0042907B /* MMMutableMethod */ = {
 			isa = PBXGroup;
 			children = (
-				0EBBEB2216CBF5610042907B /* MMMutableMethod */,
+				0ED8420E16D60EFF00F57553 /* MMAnonymousClass */,
 				0EBBEB1F16CBF5610042907B /* ExampleClass */,
 			);
 			name = MMMutableMethod;
@@ -179,27 +171,12 @@
 			path = ../../ExampleClass;
 			sourceTree = "<group>";
 		};
-		0EBBEB2216CBF5610042907B /* MMMutableMethod */ = {
-			isa = PBXGroup;
-			children = (
-				0EBBEB2316CBF5610042907B /* MMMutableMethod.h */,
-				0EBBEB2416CBF5610042907B /* MMProxy.h */,
-				0EBBEB2516CBF5610042907B /* MMProxy.m */,
-				0EBBEB2616CBF5610042907B /* NSObject+MMMutableMethod.h */,
-				0EBBEB2716CBF5610042907B /* NSObject+MMMutableMethod.m */,
-			);
-			name = MMMutableMethod;
-			path = ../../MMMutableMethod;
-			sourceTree = "<group>";
-		};
 		0EC89C7416C2C8FF00BD568F /* Test */ = {
 			isa = PBXGroup;
 			children = (
 				0EC89C7516C2C8FF00BD568F /* Supporting Files */,
 				0EC89C8216C2C96800BD568F /* MMTestClass.h */,
 				0EC89C8316C2C96800BD568F /* MMTestClass.m */,
-				0EC89C7A16C2C8FF00BD568F /* MMProxyTest.h */,
-				0EC89C7B16C2C8FF00BD568F /* MMProxyTest.m */,
 				0EA43C1C16C3D67A003B1E0E /* MMNSObjectOverrideTest.h */,
 				0EA43C1D16C3D67A003B1E0E /* MMNSObjectOverrideTest.m */,
 			);
@@ -214,6 +191,15 @@
 				0EC89C7D16C2C8FF00BD568F /* Test-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0ED8420E16D60EFF00F57553 /* MMAnonymousClass */ = {
+			isa = PBXGroup;
+			children = (
+				0ED8421016D60F9600F57553 /* NSObject+MMAnonymousClass.h */,
+				0ED8421116D60F9600F57553 /* NSObject+MMAnonymousClass.m */,
+			);
+			name = MMAnonymousClass;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -333,8 +319,7 @@
 				0E9E767B16BD6D2E006DE834 /* ORAppDelegate.m in Sources */,
 				0E9E768A16BD6D2E006DE834 /* ORViewController.m in Sources */,
 				0EBBEB2816CBF5610042907B /* UIOnClickListener.m in Sources */,
-				0EBBEB2A16CBF5610042907B /* MMProxy.m in Sources */,
-				0EBBEB2C16CBF5610042907B /* NSObject+MMMutableMethod.m in Sources */,
+				0ED8421216D60F9600F57553 /* NSObject+MMAnonymousClass.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -343,11 +328,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				0EC89C8416C2C96900BD568F /* MMTestClass.m in Sources */,
-				0E964E4616C87CBD00345556 /* MMProxyTest.m in Sources */,
 				0E3DCCE016C88A45006CF7E1 /* MMNSObjectOverrideTest.m in Sources */,
 				0EBBEB2916CBF5610042907B /* UIOnClickListener.m in Sources */,
-				0EBBEB2B16CBF5610042907B /* MMProxy.m in Sources */,
-				0EBBEB2D16CBF5610042907B /* NSObject+MMMutableMethod.m in Sources */,
+				0ED8421316D60F9600F57553 /* NSObject+MMAnonymousClass.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
