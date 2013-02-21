@@ -8,7 +8,7 @@
 #import "ORViewController.h"
 #import "NSObject+MMAnonymousClass.h"
 #import "UIOnClickListener.h"
-
+#import <objc/message.h>
 
 @interface ORViewController ()
 
@@ -63,13 +63,30 @@
                            cell.textLabel.text=arr[indexPath.row];
                            return cell;
                        });
-          
-            
         }];
 
-  
-    
     self.tableView.dataSource=(id<UITableViewDataSource>)ds;
+    id delegate =[[NSObject alloc] init:^{
+        ADD_METHOD(@selector(tableView:didSelectRowAtIndexPath:),
+                   @protocol(UITableViewDelegate),
+                   NO,
+                   ^(id selfObj,UITableView* tv,NSIndexPath* path)
+                   {
+                       NSLog(@"did select row %i",path.row);
+                   });
+        ADD_METHOD(@selector(tableView:willSelectRowAtIndexPath:),
+                   @protocol(UITableViewDelegate),
+                   NO,
+                   ^NSIndexPath*(id selfObj,UITableView* tv,NSIndexPath* path)
+                   {
+                       NSLog(@"will select row %i",path.row);
+                       return path;
+                   });
+
+    }];
+    self.tableView.delegate=delegate;
+    
+    
     [self.tableView reloadData];
   
     UIButton *but= [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -85,7 +102,11 @@
     but.frame=CGRectMake(50, 0, 50, 50);
     [self.view addSubview:but];
     
-
+    NSString *str = [@"Go" overrideMethod:@selector(description) blockImp:^NSString*(){
+      return @"Stop";
+    }];
+    NSLog(@"%@",str);
+    
     [but addTarget:[[UIOnClickListener new] overrideMethod:@selector(onClick:) blockImp:^void(id obj,id sender){
         
         UIViewController * vc = [[UIViewController alloc] init];
@@ -123,8 +144,29 @@
     
     
     
+    NSMutableArray * array = [NSMutableArray arrayWithCapacity:10];
+    [array modifyMethods:^{
+        OVERRIDE(@selector(addObject:),
+                 ^(id arr,id anObject1)
+                 {
+                     NSLog(@"%@",[anObject1 description]);
+                     //[super addObject:anObject1]
+                     objc_msgSendSuper(SUPER(arr), @selector(addObject:),anObject1);
+                 });
+        OVERRIDE(@selector(insertObject:atIndex:),
+                 ^(id arr,id anObject,NSUInteger index)
+                 {
+                     NSLog(@"%@",[anObject description]);
+                     //[super insertObject:anObject atIndex:index];
+                     objc_msgSendSuper(SUPER(arr), @selector(insertObject:atIndex:),anObject,index);
+                     
+                 });
+    }];
+    [array addObject:@"One"];
+    [array addObject:@"Two"];
     
-
+    NSLog(@"%@",[array description]);
+    
 }
 -(void)viewDidAppear:(BOOL)animated{
         return;

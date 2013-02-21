@@ -8,7 +8,7 @@
 
 #import "NSObject+MMAnonymousClass.h"
 #import <objc/runtime.h>
-
+#import <objc/message.h>
 
 NSString *const kMMExeptionMethodError          = @"MMExeptionMethodError";
 NSString *const kMMExeptionSelector             = @"MMExeptionSelector";
@@ -32,18 +32,15 @@ BOOL OVERRIDE(SEL sel,id blockIMP){
     }
     return result;
 }
-BOOL ADD_METHOD(SEL sel,Protocol *p, BOOL isReq, id blockIMP){
+BOOL ADD_METHOD_IN(SEL sel, const char *types,id blockIMP){
     BOOL result=NO;
-    if (newClass) {
+    if ((newClass)&&(types)) {
         Method method = class_getInstanceMethod(newClass, sel);
         if (method) {
             result = OVERRIDE(sel, blockIMP);
         }else{
-            struct objc_method_description descript=protocol_getMethodDescription(p, sel, isReq, YES);
-            if (descript.types!=NULL) {
-                IMP newImp = imp_implementationWithBlock(blockIMP);
-                result=class_addMethod(newClass, sel, newImp, descript.types);
-            }
+            IMP newImp = imp_implementationWithBlock(blockIMP);
+            result=class_addMethod(newClass, sel, newImp, types);
         }
     }
     if (result==NO) {
@@ -53,38 +50,27 @@ BOOL ADD_METHOD(SEL sel,Protocol *p, BOOL isReq, id blockIMP){
         @throw [NSException exceptionWithName:kMMExeptionMethodError reason:reason userInfo:@{kMMExeptionSelector:NSStringFromSelector(sel)}];
     }
     return result;
-
+}
+BOOL ADD_METHOD(SEL sel,Protocol *p, BOOL isReq, id blockIMP){
+    struct objc_method_description descript=protocol_getMethodDescription(p, sel, isReq, YES);
+    return ADD_METHOD_IN(sel, descript.types, blockIMP);
 }
 BOOL  ADD_METHOD_C(SEL sel,Class c,id blockIMP){
-    BOOL result=NO;
-    if (newClass) {
-        Method method = class_getInstanceMethod(newClass, sel);
-        if (method) {
-            result = OVERRIDE(sel, blockIMP);
-        }else{
-            method = class_getInstanceMethod(c, sel);
-            if (method) {
-                IMP newImp = imp_implementationWithBlock(blockIMP);
-                result=class_addMethod(newClass, sel, newImp, method_getTypeEncoding(method));
-            }
-        }
-        
-    }
-    if (result==NO) {
-        //method can't be added. Please, check params
-        NSString *reason=[NSString stringWithFormat:@"Method (%@) can't be added. Please, check params",NSStringFromSelector(sel)];
-        @throw [NSException exceptionWithName:kMMExeptionMethodError reason:reason userInfo:@{kMMExeptionSelector:NSStringFromSelector(sel)}];
-    }
-    return result;
-
+    Method method = class_getInstanceMethod(c, sel);
+    return ADD_METHOD_IN(sel, method_getTypeEncoding(method), blockIMP);
 }
-
+struct objc_super *SUPER(id obj){
+    struct objc_super superInfo = {obj,[obj superclass]},*retPoint=&superInfo;
+    return retPoint;
+}
 @implementation NSObject (MMAnonymousClass)
 
 -(id) modifyMethods:(void(^)())ovBlock{
+    
+     
     //universal mutex ?????
     @synchronized([NSObject class]){
-        //Частично использован код Sergey Starukhin
+        //использован код Sergey Starukhin
         //из форка см.
         //https://github.com/pingvin4eg/MMMutableMethods/blob/master/MMMutableMethod/NSObject%2BOverrideMethod.m
         
