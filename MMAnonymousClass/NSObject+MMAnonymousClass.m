@@ -61,7 +61,38 @@ BOOL  ADD_METHOD_C(SEL sel,Class c,id blockIMP){
 }
 
 @implementation NSObject (MMAnonymousClass)
++ (id)newInstAnonClass:(void(^)())blockOv{
+    //universal mutex ?????
+    @synchronized([NSObject class]){
+        //использован код Sergey Starukhin
+        //из форка см.
+        //https://github.com/pingvin4eg/MMMutableMethods/blob/master/MMMutableMethod/NSObject%2BOverrideMethod.m
+        
+        newClass=nil;
+        NSString *objClassStr= NSStringFromClass([self class]);
+        NSString *format=@"%@_anon_%i";
+        NSUInteger i=0;
+        
+        NSString *newClassStr =nil;
+        do{
+            newClassStr = [NSString stringWithFormat:format,objClassStr,i];
+            newClass = NSClassFromString(newClassStr);
+            i++;
+        }while(newClass);
+        
+        newClass = objc_allocateClassPair([self class], [newClassStr UTF8String], 0);
+        mm_error_flag=NO;
+        blockOv();
+        if (mm_error_flag){
+            return nil;
+        }
+        objc_registerClassPair(newClass);
+        id inst =[newClass alloc];
+        newClass =nil;
+        return inst;
+    }
 
+}
 -(id) modifyMethods:(void(^)())ovBlock{
     
      

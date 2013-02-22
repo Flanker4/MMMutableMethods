@@ -23,6 +23,8 @@ BOOL ADD_METHOD_C(SEL sel,Class c,id blockIMP);
 + (id)new:(void(^)())blockOv;
 - (id)init:(void(^)())blockOv;
 - (id)modifyMethods:(void(^)())blockOv;
++ (id)newInstAnonClass:(void(^)())blockOv;
+
 -(id) addMethod:(SEL)sel fromProtocol:(Protocol *)p isRequired:(BOOL)isReq blockImp:(id)block;
 -(id) overrideMethod:(SEL)sel blockImp:(id)block;
 

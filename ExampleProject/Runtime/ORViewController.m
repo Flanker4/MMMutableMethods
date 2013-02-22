@@ -178,10 +178,10 @@
 }
 -(IBAction)onClick:(id)sender{
     
-    UIView * tmpView =[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)];
-    tmpView.backgroundColor=[UIColor redColor];
-    [tmpView modifyMethods:^{
+    
+    UIView *tmpView = [[UIView newInstAnonClass:^{
         OVERRIDE(@selector(drawRect:), ^void(UIView *vie,CGRect rect){
+            NSLog(@"%@",NSStringFromCGRect(rect));
             CGContextRef context = UIGraphicsGetCurrentContext();
             
             CGContextSetLineWidth(context, 2.0);
@@ -200,13 +200,16 @@
             CGContextStrokePath(context);
             CGColorSpaceRelease(colorspace);
             CGColorRelease(color);
-
         });
-    }];
+    }] initWithFrame:CGRectMake(0, 100, 320, 380)];
     
+   
+    
+    UIView * tmpView2 =[[[tmpView class] alloc] initWithFrame:CGRectMake(0, 100, 320, 380)];
     [self.view addSubview:tmpView];
-    [tmpView setNeedsDisplay];
-    [self.view setNeedsDisplay];
+    //[self.view addSubview:tmpView2];
+ 
+    [tmpView release];
     return;
     UIViewController * vc = [[UIViewController alloc] init];
     
