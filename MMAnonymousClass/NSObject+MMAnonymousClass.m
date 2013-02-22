@@ -59,10 +59,7 @@ BOOL  ADD_METHOD_C(SEL sel,Class c,id blockIMP){
     Method method = class_getInstanceMethod(c, sel);
     return ADD_METHOD_IN(sel, method_getTypeEncoding(method), blockIMP);
 }
-struct objc_super *SUPER(id obj){
-    struct objc_super superInfo = {obj,[obj superclass]},*retPoint=&superInfo;
-    return retPoint;
-}
+
 @implementation NSObject (MMAnonymousClass)
 
 -(id) modifyMethods:(void(^)())ovBlock{

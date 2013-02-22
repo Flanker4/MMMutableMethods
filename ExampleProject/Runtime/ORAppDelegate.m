@@ -18,13 +18,13 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    [self overrideMethod:@selector(applicationDidBecomeActive:)
+    /*[self overrideMethod:@selector(applicationDidBecomeActive:)
                 blockImp:^void(id obj,UIApplication* app)
     {
         UIAlertView *alv=[[UIAlertView alloc] initWithTitle:@"ss" message:nil delegate:nil cancelButtonTitle:@"fuuu" otherButtonTitles:nil];
         [alv show];
         [alv release];
-    }];
+    }];*/
     
     return YES;
    

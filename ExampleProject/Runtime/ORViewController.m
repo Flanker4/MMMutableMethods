@@ -9,7 +9,7 @@
 #import "NSObject+MMAnonymousClass.h"
 #import "UIOnClickListener.h"
 #import <objc/message.h>
-
+#import <QuartzCore/QuartzCore.h>
 @interface ORViewController ()
 
 @end
@@ -19,7 +19,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+   
+    
+    
     //Объявляем делегат (объяснения по MMProxy ниже) //ds не освобождается. утечка
    
     
@@ -151,14 +153,16 @@
                  {
                      NSLog(@"%@",[anObject1 description]);
                      //[super addObject:anObject1]
-                     objc_msgSendSuper(SUPER(arr), @selector(addObject:),anObject1);
+                     struct objc_super superInfo = {arr,[arr superclass]};
+                     objc_msgSendSuper(&superInfo, @selector(addObject:),anObject1);
                  });
         OVERRIDE(@selector(insertObject:atIndex:),
                  ^(id arr,id anObject,NSUInteger index)
                  {
                      NSLog(@"%@",[anObject description]);
                      //[super insertObject:anObject atIndex:index];
-                     objc_msgSendSuper(SUPER(arr), @selector(insertObject:atIndex:),anObject,index);
+                     struct objc_super superInfo = {arr,[arr superclass]};
+                     objc_msgSendSuper(&superInfo, @selector(insertObject:atIndex:),anObject,index);
                      
                  });
     }];
@@ -173,6 +177,37 @@
 
 }
 -(IBAction)onClick:(id)sender{
+    
+    UIView * tmpView =[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)];
+    tmpView.backgroundColor=[UIColor redColor];
+    [tmpView modifyMethods:^{
+        OVERRIDE(@selector(drawRect:), ^void(UIView *vie,CGRect rect){
+            CGContextRef context = UIGraphicsGetCurrentContext();
+            
+            CGContextSetLineWidth(context, 2.0);
+            
+            CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
+            
+            CGFloat components[] = {0.0, 0.0, 1.0, 1.0};
+            
+            CGColorRef color = CGColorCreate(colorspace, components);
+            
+            CGContextSetStrokeColorWithColor(context, color);
+            
+            CGContextMoveToPoint(context, 0, 0);
+            CGContextAddLineToPoint(context, 300, 400);
+            
+            CGContextStrokePath(context);
+            CGColorSpaceRelease(colorspace);
+            CGColorRelease(color);
+
+        });
+    }];
+    
+    [self.view addSubview:tmpView];
+    [tmpView setNeedsDisplay];
+    [self.view setNeedsDisplay];
+    return;
     UIViewController * vc = [[UIViewController alloc] init];
     
     [vc view];

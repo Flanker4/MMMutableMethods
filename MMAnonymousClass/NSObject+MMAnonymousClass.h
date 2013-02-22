@@ -13,12 +13,10 @@
 //@throw
 extern NSString *const kMMExeptionMethodError;
 extern NSString *const kMMExeptionSelector;
-
 //c help func
 BOOL OVERRIDE(SEL sel,id blockIMP);
 BOOL ADD_METHOD(SEL sel,Protocol *p, BOOL isReq, id blockIMP);
 BOOL ADD_METHOD_C(SEL sel,Class c,id blockIMP);
-struct objc_super *SUPER(id obj);
 
 //cathegory
 @interface NSObject(MMAnonymousClass)
