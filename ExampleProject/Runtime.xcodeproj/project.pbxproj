@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0E3DCCE016C88A45006CF7E1 /* MMNSObjectOverrideTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA43C1D16C3D67A003B1E0E /* MMNSObjectOverrideTest.m */; };
 		0E9E766B16BD6D2E006DE834 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E9E766A16BD6D2D006DE834 /* UIKit.framework */; };
 		0E9E766D16BD6D2E006DE834 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E9E766C16BD6D2E006DE834 /* Foundation.framework */; };
 		0E9E766F16BD6D2E006DE834 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E9E766E16BD6D2E006DE834 /* CoreGraphics.framework */; };
@@ -328,7 +327,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0EC89C8416C2C96900BD568F /* MMTestClass.m in Sources */,
-				0E3DCCE016C88A45006CF7E1 /* MMNSObjectOverrideTest.m in Sources */,
 				0EBBEB2916CBF5610042907B /* UIOnClickListener.m in Sources */,
 				0ED8421316D60F9600F57553 /* NSObject+MMAnonymousClass.m in Sources */,
 			);

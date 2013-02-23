@@ -35,7 +35,7 @@
 
     NSObject *ds=nil;
    
-    ds=[NSObject new:^{
+    ds=[NSObject newInstAnonClass:^{
             ADD_METHOD(@selector(numberOfSectionsInTableView:),
                        @protocol(UITableViewDataSource),
                        NO,
@@ -68,7 +68,7 @@
         }];
 
     self.tableView.dataSource=(id<UITableViewDataSource>)ds;
-    id delegate =[[NSObject alloc] init:^{
+    id delegate =[NSObject newInstAnonClass:^{
         ADD_METHOD(@selector(tableView:didSelectRowAtIndexPath:),
                    @protocol(UITableViewDelegate),
                    NO,
@@ -94,82 +94,10 @@
     UIButton *but= [UIButton buttonWithType:UIButtonTypeRoundedRect];
     but.frame=CGRectMake(0, 0, 50, 50);
     [self.view addSubview:but];
-    
     [but addTarget:self
             action:@selector(onClick:)
   forControlEvents:UIControlEventTouchUpInside];
     
-    
-    but= [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    but.frame=CGRectMake(50, 0, 50, 50);
-    [self.view addSubview:but];
-    
-    NSString *str = [@"Go" overrideMethod:@selector(description) blockImp:^NSString*(){
-      return @"Stop";
-    }];
-    NSLog(@"%@",str);
-    
-    [but addTarget:[[UIOnClickListener new] overrideMethod:@selector(onClick:) blockImp:^void(id obj,id sender){
-        
-        UIViewController * vc = [[UIViewController alloc] init];
-        
-        
-        [vc overrideMethod:@selector(viewWillAppear:) blockImp:^void(UIViewController* selfVC){
-                selfVC.view.backgroundColor=[UIColor redColor];
-                UIButton *but= [UIButton buttonWithType:UIButtonTypeRoundedRect];
-                but.frame=CGRectMake(0, 0, 50, 50);
-                [selfVC.view addSubview:but];
-                
-
-                __block UIOnClickListener *listener =[UIOnClickListener new:^{
-                    OVERRIDE(@selector(onClick:), ^void(id selfObj,UIButton* sender){
-                        [sender removeTarget:listener action:@selector(onClick:) forControlEvents:UIControlEventTouchUpInside];
-                        [listener release];
-                        listener=nil;
-                        [self dismissViewControllerAnimated:YES completion:^{}];
-                    });
-                }];
-                [but addTarget:listener
-                        action:@selector(onClick:)
-              forControlEvents:UIControlEventTouchUpInside];
-            
-            
-        }];
-       
-        vc.modalPresentationStyle=UIModalPresentationFullScreen;
-        [self presentViewController:vc animated:YES completion:^{}];
-        [vc release];
-
-    }]
-            action:@selector(onClick:)
-  forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    
-    NSMutableArray * array = [NSMutableArray arrayWithCapacity:10];
-    [array modifyMethods:^{
-        OVERRIDE(@selector(addObject:),
-                 ^(id arr,id anObject1)
-                 {
-                     NSLog(@"%@",[anObject1 description]);
-                     //[super addObject:anObject1]
-                     struct objc_super superInfo = {arr,[arr superclass]};
-                     objc_msgSendSuper(&superInfo, @selector(addObject:),anObject1);
-                 });
-        OVERRIDE(@selector(insertObject:atIndex:),
-                 ^(id arr,id anObject,NSUInteger index)
-                 {
-                     NSLog(@"%@",[anObject description]);
-                     //[super insertObject:anObject atIndex:index];
-                     struct objc_super superInfo = {arr,[arr superclass]};
-                     objc_msgSendSuper(&superInfo, @selector(insertObject:atIndex:),anObject,index);
-                     
-                 });
-    }];
-    [array addObject:@"One"];
-    [array addObject:@"Two"];
-    
-    NSLog(@"%@",[array description]);
     
 }
 -(void)viewDidAppear:(BOOL)animated{
@@ -179,7 +107,7 @@
 -(IBAction)onClick:(id)sender{
     
     
-    UIView *tmpView = [[UIView newInstAnonClass:^{
+    UIView *tmpView = [[UIView allocAnonClass:^{
         OVERRIDE(@selector(drawRect:), ^void(UIView *vie,CGRect rect){
             NSLog(@"%@",NSStringFromCGRect(rect));
             CGContextRef context = UIGraphicsGetCurrentContext();
@@ -205,29 +133,12 @@
     
    
     
-    UIView * tmpView2 =[[[tmpView class] alloc] initWithFrame:CGRectMake(0, 100, 320, 380)];
+    //UIView * tmpView2 =[[[tmpView class] alloc] initWithFrame:CGRectMake(0, 100, 320, 380)];
     [self.view addSubview:tmpView];
     //[self.view addSubview:tmpView2];
  
     [tmpView release];
     return;
-    UIViewController * vc = [[UIViewController alloc] init];
-    
-    [vc view];
-    vc.view.backgroundColor=[UIColor greenColor];
-        
-    UIButton *but= [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    but.frame=CGRectMake(0, 0, 50, 50);
-    [vc.view addSubview:but];
-    [but addTarget:self
-            action:@selector(onClose:)
-      forControlEvents:UIControlEventTouchUpInside];
-    
-    vc.modalPresentationStyle=UIModalPresentationFullScreen;
-    
-    [self presentViewController:vc animated:YES completion:^{}];
-    [vc release];
-
 }
 -(IBAction)onClose:(id)sender{
     [self dismissViewControllerAnimated:YES completion:^{}];

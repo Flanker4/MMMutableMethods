@@ -15,7 +15,8 @@ NSString *const kMMExeptionSelector             = @"MMExeptionSelector";
 
 static Class newClass=nil;
 static bool  mm_error_flag=NO;
-BOOL OVERRIDE(SEL sel,id blockIMP){
+
+ inline BOOL OVERRIDE     (SEL sel,id blockIMP){
     BOOL result=NO;
     if (newClass) {
         Method method = class_getInstanceMethod(newClass, sel);
@@ -32,7 +33,7 @@ BOOL OVERRIDE(SEL sel,id blockIMP){
     }
     return result;
 }
-BOOL ADD_METHOD_IN(SEL sel, const char *types,id blockIMP){
+ static inline BOOL ADD_METHOD_IN(SEL sel,const char *types, id blockIMP){
     BOOL result=NO;
     if ((newClass)&&(types)) {
         Method method = class_getInstanceMethod(newClass, sel);
@@ -51,23 +52,24 @@ BOOL ADD_METHOD_IN(SEL sel, const char *types,id blockIMP){
     }
     return result;
 }
-BOOL ADD_METHOD(SEL sel,Protocol *p, BOOL isReq, id blockIMP){
+ inline BOOL ADD_METHOD   (SEL sel,Protocol *p, BOOL isReq, id blockIMP){
     struct objc_method_description descript=protocol_getMethodDescription(p, sel, isReq, YES);
     return ADD_METHOD_IN(sel, descript.types, blockIMP);
 }
-BOOL  ADD_METHOD_C(SEL sel,Class c,id blockIMP){
+ inline BOOL ADD_METHOD_C (SEL sel,Class c, id blockIMP){
     Method method = class_getInstanceMethod(c, sel);
     return ADD_METHOD_IN(sel, method_getTypeEncoding(method), blockIMP);
 }
 
+
 @implementation NSObject (MMAnonymousClass)
-+ (id)newInstAnonClass:(void(^)())blockOv{
+
+
++(Class) anonClass:(void(^)())blockOv{
     //universal mutex ?????
     @synchronized([NSObject class]){
         //использован код Sergey Starukhin
-        //из форка см.
-        //https://github.com/pingvin4eg/MMMutableMethods/blob/master/MMMutableMethod/NSObject%2BOverrideMethod.m
-        
+        //из форка см. https://github.com/pingvin4eg/MMMutableMethods
         newClass=nil;
         NSString *objClassStr= NSStringFromClass([self class]);
         NSString *format=@"%@_anon_%i";
@@ -81,49 +83,40 @@ BOOL  ADD_METHOD_C(SEL sel,Class c,id blockIMP){
         }while(newClass);
         
         newClass = objc_allocateClassPair([self class], [newClassStr UTF8String], 0);
+        if (!newClass){
+            return newClass;
+        }
         mm_error_flag=NO;
         blockOv();
         if (mm_error_flag){
-            return nil;
+            return NULL;
         }
         objc_registerClassPair(newClass);
-        id inst =[newClass alloc];
-        newClass =nil;
-        return inst;
+        return newClass;
     }
 
 }
--(id) modifyMethods:(void(^)())ovBlock{
-    
-     
-    //universal mutex ?????
-    @synchronized([NSObject class]){
-        //использован код Sergey Starukhin
-        //из форка см.
-        //https://github.com/pingvin4eg/MMMutableMethods/blob/master/MMMutableMethod/NSObject%2BOverrideMethod.m
-        
-        newClass=nil;
-        NSString *objClassStr= NSStringFromClass([self class]);
-        NSString *format=@"%@_anon_%i";
-        NSUInteger i=0;
-        
-        NSString *newClassStr =nil;
-        do{
-            newClassStr = [NSString stringWithFormat:format,objClassStr,i];
-            newClass = NSClassFromString(newClassStr);
-            i++;
-        }while(newClass);
-        
-        newClass = objc_allocateClassPair([self class], [newClassStr UTF8String], 0);
-        mm_error_flag=NO;
-        ovBlock();
-        if (mm_error_flag){
-            return nil;
-        }
-        objc_registerClassPair(newClass);
-        object_setClass(self, newClass);
-        return self;
-    }
+
+//
+// MARK: - Primary
+//
++ (id)allocAnonClass:(void(^)())blockOv{
+    Class newClass=[self anonClass:blockOv];
+    id inst =[newClass alloc];
+    newClass =nil;
+    return inst;
+}
++ (id)newInstAnonClass:(void(^)())blockOv{
+    return  [[[self class] allocAnonClass:blockOv] init];
+}
+
+//
+// MARK: - Deprecated!
+//
+-(id) modifyMethods:(void(^)())blockOv{
+    Class newClass=[[self class] anonClass:blockOv];
+    object_setClass(self, newClass);
+    return self;
 }
 -(id) addMethod:(SEL)sel fromProtocol:(Protocol *)p isRequired:(BOOL)isReq blockImp:(id)block{
     return [self modifyMethods:^{
@@ -134,12 +127,5 @@ BOOL  ADD_METHOD_C(SEL sel,Class c,id blockIMP){
     return [self modifyMethods:^{
         OVERRIDE(sel,  block);
     }];
-}
-+ (id)new:(void(^)())blockOv{
-    return  [[[self class] alloc] init:blockOv];
-}
-- (id)init:(void(^)())blockOv{
-    id obj=[self init];
-    return [obj modifyMethods:blockOv];
 }
 @end
