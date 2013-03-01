@@ -21,12 +21,11 @@
     [super viewDidLoad];
    
     
-    
     //Объявляем делегат (объяснения по MMProxy ниже) //ds не освобождается. утечка
    
     
     //массив с данными для отображения
-    NSArray *arr=@[@"one",@"two",@"three", @"four",@"five"];
+    items=[@[@"one",@"two",@"three", @"four",@"five"] mutableCopy];
    
     //переопределяем метод делегата (возвращающие количество секций, ячеек и сами ячейки)
     //ВАЖНО: параметр isRequired указывает является ли этот метод обязательным для протокола (@required)
@@ -35,25 +34,22 @@
 
     NSObject *ds=nil;
    
-    ds=[NSObject newInstAnonClass:^{
+    ds=[NSObject newInstAnon:^{
             ADD_METHOD(@selector(numberOfSectionsInTableView:),
                        @protocol(UITableViewDataSource),
-                       NO,
                        ^NSUInteger(id object,UITableView*tb)
                        {
                            return 1;
                        });
             ADD_METHOD(@selector(tableView:numberOfRowsInSection:),
                        @protocol(UITableViewDataSource),
-                       YES,
                        ^NSUInteger(id object,UITableView*tb)
                        {
-                           return [arr count];
+                           return [items count];
                        });
             
             ADD_METHOD(@selector(tableView:cellForRowAtIndexPath:),
                        @protocol(UITableViewDataSource),
-                       YES,
                        ^id(id object,UITableView*tb,NSIndexPath* indexPath)
                        {
                            static NSString *TableIdentifier = @"SimpleTableItem";
@@ -62,23 +58,21 @@
                                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TableIdentifier];
                            
                            
-                           cell.textLabel.text=arr[indexPath.row];
+                           cell.textLabel.text=items[indexPath.row];
                            return cell;
                        });
         }];
 
     self.tableView.dataSource=(id<UITableViewDataSource>)ds;
-    id delegate =[NSObject newInstAnonClass:^{
+    id delegate =[NSObject newInstAnon:^{
         ADD_METHOD(@selector(tableView:didSelectRowAtIndexPath:),
                    @protocol(UITableViewDelegate),
-                   NO,
                    ^(id selfObj,UITableView* tv,NSIndexPath* path)
                    {
                        NSLog(@"did select row %i",path.row);
                    });
         ADD_METHOD(@selector(tableView:willSelectRowAtIndexPath:),
                    @protocol(UITableViewDelegate),
-                   NO,
                    ^NSIndexPath*(id selfObj,UITableView* tv,NSIndexPath* path)
                    {
                        NSLog(@"will select row %i",path.row);
@@ -106,8 +100,37 @@
 }
 -(IBAction)onClick:(id)sender{
     
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Remove" message:nil delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES",nil];
+   
+    __block NSData *data = [[NSData dataWithContentsOfURL: [NSURL URLWithString:@"http://habrahabr.ru"] ] retain];
+    id delegate = [NSObject newInstAnonWithReuseID:MM_DEFAULT_REUSE_ID :^{
+        ADD_METHOD(@selector(alertView:clickedButtonAtIndex:),
+                   @protocol(UIAlertViewDelegate),
+                   ^void(id selfObj,UIAlertView* alertView,NSInteger index)
+                   {
+                       //[selfObj removeInstanceMethod:@selector(alertView:clickedButtonAtIndex:)];
+                       alertView.delegate=nil;
+                       [selfObj release];
+                       [data release];
+                        
+                       if (index==0) {
+                           return;
+                       }
+                       [items removeLastObject];
+                       if ([items count]==0) {
+                           [items addObjectsFromArray:@[@"one",@"two",@"three", @"four",@"five"]];
+                       }
+                       [self.tableView reloadData];
+                      
+                   });
+    }];
+    av.delegate=delegate;
+    [av show];
+    [av release];
     
-    UIView *tmpView = [[UIView allocAnonClass:^{
+    return;
+    
+    UIView *tmpView = [[UIView allocAnon:^{
         OVERRIDE(@selector(drawRect:), ^void(UIView *vie,CGRect rect){
             NSLog(@"%@",NSStringFromCGRect(rect));
             CGContextRef context = UIGraphicsGetCurrentContext();
@@ -139,6 +162,18 @@
  
     [tmpView release];
     return;
+}
+
+-(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (index==0) {
+        return;
+    }
+    [items removeLastObject];
+    if ([items count]==0) {
+        [items addObjectsFromArray:@[@"one",@"two",@"three", @"four",@"five"]];
+    }
+    [self.tableView reloadData];
+
 }
 -(IBAction)onClose:(id)sender{
     [self dismissViewControllerAnimated:YES completion:^{}];

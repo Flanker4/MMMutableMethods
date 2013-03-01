@@ -7,7 +7,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ORViewController : UIViewController
+@interface ORViewController : UIViewController<UIAlertViewDelegate>{
+    NSMutableArray *items;
+}
 @property (retain, nonatomic) IBOutlet UITableView *tableView;
 
 @end

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E010B5916E102CA00E9C0E5 /* NSString+AllowCharactersInSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E010B5816E102CA00E9C0E5 /* NSString+AllowCharactersInSet.m */; };
+		0E010B5A16E102CA00E9C0E5 /* NSString+AllowCharactersInSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E010B5816E102CA00E9C0E5 /* NSString+AllowCharactersInSet.m */; };
 		0E9E766B16BD6D2E006DE834 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E9E766A16BD6D2D006DE834 /* UIKit.framework */; };
 		0E9E766D16BD6D2E006DE834 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E9E766C16BD6D2E006DE834 /* Foundation.framework */; };
 		0E9E766F16BD6D2E006DE834 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E9E766E16BD6D2E006DE834 /* CoreGraphics.framework */; };
@@ -33,6 +35,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0E010B5716E102CA00E9C0E5 /* NSString+AllowCharactersInSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+AllowCharactersInSet.h"; path = "../../MMAnonymousClass/NSString+AllowCharactersInSet.h"; sourceTree = "<group>"; };
+		0E010B5816E102CA00E9C0E5 /* NSString+AllowCharactersInSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+AllowCharactersInSet.m"; path = "../../MMAnonymousClass/NSString+AllowCharactersInSet.m"; sourceTree = "<group>"; };
 		0E9E766616BD6D2D006DE834 /* Runtime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Runtime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E9E766A16BD6D2D006DE834 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0E9E766C16BD6D2E006DE834 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -132,6 +136,8 @@
 				0E9E768216BD6D2E006DE834 /* MainStoryboard_iPhone.storyboard */,
 				0E9E768516BD6D2E006DE834 /* MainStoryboard_iPad.storyboard */,
 				0E9E767116BD6D2E006DE834 /* Supporting Files */,
+				0E010B5716E102CA00E9C0E5 /* NSString+AllowCharactersInSet.h */,
+				0E010B5816E102CA00E9C0E5 /* NSString+AllowCharactersInSet.m */,
 			);
 			path = Runtime;
 			sourceTree = "<group>";
@@ -319,6 +325,7 @@
 				0E9E768A16BD6D2E006DE834 /* ORViewController.m in Sources */,
 				0EBBEB2816CBF5610042907B /* UIOnClickListener.m in Sources */,
 				0ED8421216D60F9600F57553 /* NSObject+MMAnonymousClass.m in Sources */,
+				0E010B5916E102CA00E9C0E5 /* NSString+AllowCharactersInSet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -329,6 +336,7 @@
 				0EC89C8416C2C96900BD568F /* MMTestClass.m in Sources */,
 				0EBBEB2916CBF5610042907B /* UIOnClickListener.m in Sources */,
 				0ED8421316D60F9600F57553 /* NSObject+MMAnonymousClass.m in Sources */,
+				0E010B5A16E102CA00E9C0E5 /* NSString+AllowCharactersInSet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
