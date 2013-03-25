@@ -144,11 +144,11 @@ static bool  mm_error_flag=NO;
     
 }
 + (id)newInstAnon:(void(^)())blockOv{
-    return [self newInstAnonWithReuseID:nil blockOv];
+    return [self newInstAnonWithReuseID:nil :blockOv];
 }
 
 + (id)    newInstAnonWithReuseID:(NSString*)reuseID :(void(^)())blockOv{
-    return  [[[self class] allocAnonClass:blockOv reuseIdentifier:reuseID] init];
+    return  [[[self class] allocAnonWithReuserID:reuseID :blockOv] init];
 }
 //
 // MARK: - Deprecated!

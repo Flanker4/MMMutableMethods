@@ -4,11 +4,11 @@
 //
 //  Created by Boyko A.V. on 02.02.13.
 //
-
-#import "MMProxyTest.h"
-
+#import <SenTestingKit/SenTestingKit.h>
+@class MMTestClass;
 @interface MMNSObjectOverrideTest: SenTestCase{
     MMTestClass *obj_;
+    MMTestClass *objAnonClass_;
 }
 
 @end
