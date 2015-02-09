@@ -7,7 +7,6 @@
 //
 
 #import "NSObject+MMAnonymousClass.h"
-#import "NSString+AllowCharactersInSet.h"
 #import <objc/runtime.h>
 #import <objc/message.h>
 
@@ -80,7 +79,7 @@ static bool  mm_error_flag=NO;
         NSString *FORMAT=@"%@_anon_%@";
         NSString *newClassStr =nil;
         if (reuseID) {
-            reuseID = [reuseID stringByAllowingOnlyCharactersInSet:[NSCharacterSet alphanumericCharacterSet]];
+            reuseID = [[reuseID componentsSeparatedByCharactersInSet:[[NSCharacterSet alphanumericCharacterSet] invertedSet]] componentsJoinedByString:@""];
             newClassStr = [NSString stringWithFormat:FORMAT,objClassStr,reuseID];
             newClass = NSClassFromString(newClassStr);
             if (newClass) {
@@ -126,7 +125,7 @@ static bool  mm_error_flag=NO;
     NSString *FORMAT=@"%@_anon_%@";
     NSString *newClassStr =nil;
     if (reuseID) {
-        reuseID = [reuseID stringByAllowingOnlyCharactersInSet:[NSCharacterSet alphanumericCharacterSet]];
+        reuseID = [[reuseID componentsSeparatedByCharactersInSet:[[NSCharacterSet alphanumericCharacterSet] invertedSet]] componentsJoinedByString:@""];
         newClassStr = [NSString stringWithFormat:FORMAT,objClassStr,reuseID];
         newClass = NSClassFromString(newClassStr);
     }
