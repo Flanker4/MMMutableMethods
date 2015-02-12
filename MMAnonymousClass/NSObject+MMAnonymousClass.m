@@ -85,6 +85,8 @@ inline BOOL ADD_METHOD_C(SEL sel, Class c, id blockIMP) {
                     return NULL;
                 return newClass;
             }
+            if (blockOv == nil)
+                return newClass;
         } else {
             NSUInteger i = 0;
             do {
@@ -129,16 +131,7 @@ inline BOOL ADD_METHOD_C(SEL sel, Class c, id blockIMP) {
 }
 
 + (Class)anonWithReuserID:(NSString*)reuseID {
-    Class newClass = nil;
-    NSString *objClassStr = NSStringFromClass([self class]);
-    NSString *FORMAT = @"%@_anon_%@";
-    NSString *newClassStr = nil;
-    if (reuseID) {
-        reuseID = [[reuseID componentsSeparatedByCharactersInSet:[[NSCharacterSet alphanumericCharacterSet] invertedSet]] componentsJoinedByString:@""];
-        newClassStr = [NSString stringWithFormat:FORMAT,objClassStr,reuseID];
-        newClass = NSClassFromString(newClassStr);
-    }
-    return newClass;
+    return [self anonClass:nil reuseID:reuseID];
 }
 
 // MARK: - Deprecated!
@@ -170,7 +163,7 @@ inline BOOL ADD_METHOD_C(SEL sel, Class c, id blockIMP) {
                                      userInfo:@{kMMExeptionSelector:NSStringFromSelector(sel)}];
         return nil;
     }
-    IMP oldImpl= method_setImplementation(method,(IMP)_objc_msgForward);
+    IMP oldImpl = method_setImplementation(method,(IMP)_objc_msgForward);
     return oldImpl;
 }
 
