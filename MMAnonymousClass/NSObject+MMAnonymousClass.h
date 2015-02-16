@@ -10,29 +10,34 @@
 
 #define MM_DEFAULT_REUSE_ID  [NSString stringWithFormat:@"%s_%d", __PRETTY_FUNCTION__, __LINE__]
 
-// Excceptions
+// ANON_C(NSObject, ^(Class class) { ... })
+#define ANON_C(class, block) \
+        [class subclassWithReuseID:MM_DEFAULT_REUSE_ID configBlock:(block)]
+
+// ANON(^(Class class) { ... })
+#define ANON(block) \
+        ANON_C(NSObject, (block))
+
+// ANONOBJ_C(NSObject, ^(Class class) { ... })
+#define ANONOBJ_C(class, block) \
+        ((id)[[ANON_C(class, block) alloc] init])
+
+// ANONOBJ(^(Class class) { ... })
+#define ANONOBJ(block) \
+        ((id)[[ANON(block) alloc] init])
+
 extern NSString *const kMMExeptionMethodError;
 extern NSString *const kMMExeptionSelector;
 
-// C help functions
-extern inline BOOL OVERRIDE(SEL sel, id blockIMP);
-extern inline BOOL ADD_METHOD(SEL sel, Protocol *p, id blockIMP);
-extern inline BOOL ADD_METHOD_C(SEL sel, Class c, id blockIMP);
+@interface NSObject (MMAnonymousClass)
 
-// Category
-@interface NSObject(MMAnonymousClass)
++ (Class)subclassWithReuseID:(NSString *)reuseID
+                 configBlock:(void(^)(Class))block;
 
-// MARK: - DEPRECATED!
-- (id)modifyMethods:(void(^)())blockOv __attribute__((deprecated));
-- (id)addMethod:(SEL)sel fromProtocol:(Protocol *)p isRequired:(BOOL)isReq blockImp:(id)block __attribute__((deprecated));
-- (id)overrideMethod:(SEL)sel blockImp:(id)block __attribute__((deprecated));
-- (IMP)removeInstanceMethod:(SEL)sel;
-
-// MARK: - Allowed
-+ (id)allocAnon:(void(^)())blockOv __attribute__((deprecated));
-+ (id)allocAnonWithReuserID:(NSString*)reuseID :(void(^)())blockOv;
-+ (id)newInstAnon:(void(^)())blockOv __attribute__((deprecated));
-+ (id)newInstAnonWithReuseID:(NSString*)reuseID :(void(^)())blockOv;
-+ (Class)anonWithReuserID:(NSString*)reuseID;
++ (void)addMethod:(SEL)sel fromProtocol:(Protocol *)p blockImp:(id)block;
++ (void)addClassMethod:(SEL)sel blockImp:(id)block;
++ (void)overrideMethod:(SEL)sel blockImp:(id)block;
++ (void)removeMethod:(SEL)sel;
++ (void)removeClassMethod:(SEL)sel;
 
 @end
