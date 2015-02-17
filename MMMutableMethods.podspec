@@ -20,8 +20,8 @@ Pod::Spec.new do |s|
   s.summary      = "Anonymous classes for Objective-C"
 
   s.description  = <<-DESC
-                   Simple library to declare anonimous classes in Objective-C runtime,
-                   override methods for instances of classes and add methods for instances of classes.
+                   Simple library to declare anonymous classes in Objective-C
+                   runtime, dynamically add methods and class methods.
                    DESC
 
   s.homepage     = "https://github.com/Flanker4/MMMutableMethods"
