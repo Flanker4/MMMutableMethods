@@ -4,7 +4,7 @@ MMMutableMethods
 ##Installation
 
 ```
-pod 'MMMutableMethods', :branch => 'dev'
+pod 'MMMutableMethods', :git => 'https://github.com/k06a/MMMutableMethods', :branch => 'dev'
 ```
 
 ##Usage
