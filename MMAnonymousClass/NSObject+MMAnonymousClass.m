@@ -13,12 +13,12 @@
 NSString *const kMMExeptionMethodError = @"MMExeptionMethodError";
 NSString *const kMMExeptionSelector = @"MMExeptionSelector";
 
-Class MM_ANON_CLASS(NSString *reuseID, Class superclass, id block)
+Class MM_ANON_CLASS(NSString *reuseID, Class superclass, void(^block)(__strong Class class))
 {
     return [superclass subclassWithReuseID:reuseID configBlock:block];
 }
 
-id MM_ANON(NSString *reuseID, id block)
+id MM_ANON(NSString *reuseID, void(^block)(__strong Class class))
 {
     Class class = MM_ANON_CLASS(reuseID, [NSObject class], block);
     return [[class alloc] init];

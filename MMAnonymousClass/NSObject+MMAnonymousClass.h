@@ -13,8 +13,8 @@ extern NSString *const kMMExeptionSelector;
 
 #define MM_REUSE [NSString stringWithFormat:@"%s_%d", __PRETTY_FUNCTION__, __LINE__]
 
-Class MM_ANON_CLASS(NSString *reuseID, Class superclass, id block);
-id MM_ANON(NSString *reuseID, id block);
+Class MM_ANON_CLASS(NSString *reuseID, Class superclass, void(^block)(__strong Class class));
+id MM_ANON(NSString *reuseID, void(^block)(__strong Class class));
 
 @interface NSObject (MMAnonymousClass)
 
