@@ -1,6 +1,8 @@
 MMMutableMethods
 ========
 
+Simple library to declare anonymous classes in Objective-C runtime, dynamically add methods and class methods.
+
 ##Installation
 
 ```
