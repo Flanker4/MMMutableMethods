@@ -8,26 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-#define MM_DEFAULT_REUSE_ID  [NSString stringWithFormat:@"%s_%d", __PRETTY_FUNCTION__, __LINE__]
-
-// ANON_C(NSObject, ^(Class class) { ... })
-#define ANON_C(class, block) \
-        [class subclassWithReuseID:MM_DEFAULT_REUSE_ID configBlock:(block)]
-
-// ANON(^(Class class) { ... })
-#define ANON(block) \
-        ANON_C(NSObject, (block))
-
-// ANONOBJ_C(NSObject, ^(Class class) { ... })
-#define ANONOBJ_C(class, block) \
-        ((id)[[ANON_C(class, block) alloc] init])
-
-// ANONOBJ(^(Class class) { ... })
-#define ANONOBJ(block) \
-        ((id)[[ANON(block) alloc] init])
-
 extern NSString *const kMMExeptionMethodError;
 extern NSString *const kMMExeptionSelector;
+
+#define MM_REUSE [NSString stringWithFormat:@"%s_%d", __PRETTY_FUNCTION__, __LINE__]
+
+Class MM_ANON_CLASS(NSString *reuseID, Class superclass, id block);
+id MM_ANON(NSString *reuseID, id block);
 
 @interface NSObject (MMAnonymousClass)
 
