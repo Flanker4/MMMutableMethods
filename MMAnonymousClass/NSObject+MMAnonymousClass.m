@@ -13,14 +13,14 @@
 NSString *const kMMExeptionMethodError = @"MMExeptionMethodError";
 NSString *const kMMExeptionSelector = @"MMExeptionSelector";
 
-Class MM_ANON_CLASS(NSString *reuseID, Class superclass, void(^block)(__strong Class class))
+Class MM_CREATE_CLASS(NSString *reuseID, Class superclass, void(^block)(__strong Class class))
 {
     return [superclass subclassWithReuseID:reuseID configBlock:block];
 }
 
-id MM_ANON(NSString *reuseID, void(^block)(__strong Class class))
+id MM_CREATE(NSString *reuseID, void(^block)(__strong Class class))
 {
-    Class class = MM_ANON_CLASS(reuseID, [NSObject class], block);
+    Class class = MM_CREATE_CLASS(reuseID, [NSObject class], block);
     return [[class alloc] init];
 }
 
@@ -55,8 +55,8 @@ id MM_ANON(NSString *reuseID, void(^block)(__strong Class class))
     @throw [NSException exceptionWithName:kMMExeptionMethodError reason:reason userInfo:@{kMMExeptionSelector:NSStringFromSelector(sel)}];
 }
 
-+ (void)addClassMethod:(SEL)sel blockImp:(id)block {
-    Method method = class_getInstanceMethod(self, sel);
++ (void)addMethod:(SEL)sel fromClass:(Class)class blockImp:(id)block {
+    Method method = class_getInstanceMethod(class, sel);
     [self addMethod:sel blockImp:block types:method_getTypeEncoding(method)];
 }
 
@@ -88,7 +88,7 @@ id MM_ANON(NSString *reuseID, void(^block)(__strong Class class))
 
 + (void)removeMethod:(SEL)sel
 {
-    Method method = class_getClassMethod(self, sel);
+    Method method = class_getInstanceMethod(self, sel);
     if (method != nil) {
         method_setImplementation(method,(IMP)_objc_msgForward);
         return;
@@ -100,7 +100,7 @@ id MM_ANON(NSString *reuseID, void(^block)(__strong Class class))
 
 + (void)removeClassMethod:(SEL)sel
 {
-    Method method = class_getInstanceMethod(self, sel);
+    Method method = class_getClassMethod(self, sel);
     if (method != nil) {
         method_setImplementation(method,(IMP)_objc_msgForward);
         return;
