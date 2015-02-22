@@ -14,7 +14,7 @@ pod 'MMMutableMethods', :git => 'https://github.com/k06a/MMMutableMethods', :bra
 Following code will create new NSObject subclass and add methods **once**, no matter how many times this code will execute.
 
 ```
-[cmd startWithAMCommandCallback:MM_ANON(MM_REUSE,^(Class class){
+[cmd startWithAMCommandCallback:MM_CREATE(MM_REUSE,^(Class class){
     [class addMethod:@selector(onResultWithId:)
         fromProtocol:@protocol(AMCommandCallback)
             blockImp:^(id this,id res){
