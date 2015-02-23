@@ -14,7 +14,9 @@ extern NSString *const kMMExeptionSelector;
 #define MM_REUSE [NSString stringWithFormat:@"%s_%d", __PRETTY_FUNCTION__, __LINE__]
 
 Class MM_CREATE_CLASS(NSString *reuseID, Class superclass, void(^block)(__strong Class class));
+Class MM_CREATE_CLASS_ALWAYS(Class superclass, void(^block)(__strong Class class));
 id MM_CREATE(NSString *reuseID, void(^block)(__strong Class class));
+id MM_CREATE_ALWAYS(void(^block)(__strong Class class));
 
 @interface NSObject (MMAnonymousClass)
 

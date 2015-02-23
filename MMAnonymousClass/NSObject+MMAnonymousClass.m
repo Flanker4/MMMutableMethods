@@ -18,9 +18,20 @@ Class MM_CREATE_CLASS(NSString *reuseID, Class superclass, void(^block)(__strong
     return [superclass subclassWithReuseID:reuseID configBlock:block];
 }
 
+Class MM_CREATE_CLASS_ALWAYS(Class superclass, void(^block)(__strong Class class))
+{
+    return [superclass subclassWithReuseID:nil configBlock:block];
+}
+
 id MM_CREATE(NSString *reuseID, void(^block)(__strong Class class))
 {
     Class class = MM_CREATE_CLASS(reuseID, [NSObject class], block);
+    return [[class alloc] init];
+}
+
+id MM_CREATE_ALWAYS(void(^block)(__strong Class class))
+{
+    Class class = MM_CREATE_CLASS_ALWAYS([NSObject class], block);
     return [[class alloc] init];
 }
 
@@ -30,6 +41,10 @@ id MM_CREATE(NSString *reuseID, void(^block)(__strong Class class))
                  configBlock:(void(^)(Class class))block
 {
     reuseID = [[reuseID componentsSeparatedByCharactersInSet:[[NSCharacterSet alphanumericCharacterSet] invertedSet]] componentsJoinedByString:@""];
+    if (reuseID == nil) {
+        static NSInteger index = 0;
+        reuseID = [NSString stringWithFormat:@"MMAnonymousClass%@",@(index++)];
+    }
     
     Class ret = NSClassFromString(reuseID);
     if (ret == nil) {
