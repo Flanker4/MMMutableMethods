@@ -52,8 +52,14 @@ id MM_CREATE_ALWAYS(void(^block)(__strong Class class))
         ret = objc_allocateClassPair([self class], reuseID.UTF8String, 0);
         block(ret);
         if (nilReuseID) {
-            [ret addMethod:NSSelectorFromString(@"dealloc") fromClass:[NSObject class] blockImp:^(id this) {
+            SEL sel = NSSelectorFromString(@"dealloc");
+            IMP imp = class_getMethodImplementation(self, sel);
+            IMP newImp = imp_implementationWithBlock(^(id this) {
                 [ret deleteClass];
+            });
+            [ret addMethod:sel fromClass:[NSObject class] blockImp:^(id this){
+                ((void(*)(id))newImp)(this);
+                ((void(*)(id))imp)(this);
             }];
         }
         objc_registerClassPair(ret);
