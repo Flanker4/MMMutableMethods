@@ -41,6 +41,7 @@ id MM_CREATE_ALWAYS(void(^block)(__strong Class class))
                  configBlock:(void(^)(Class class))block
 {
     reuseID = [[reuseID componentsSeparatedByCharactersInSet:[[NSCharacterSet alphanumericCharacterSet] invertedSet]] componentsJoinedByString:@""];
+    BOOL nilReuseID = (reuseID == nil);
     if (reuseID == nil) {
         static NSInteger index = 0;
         reuseID = [NSString stringWithFormat:@"MMAnonymousClass%@",@(index++)];
@@ -50,6 +51,11 @@ id MM_CREATE_ALWAYS(void(^block)(__strong Class class))
     if (ret == nil) {
         ret = objc_allocateClassPair([self class], reuseID.UTF8String, 0);
         block(ret);
+        if (nilReuseID) {
+            [ret addMethod:NSSelectorFromString(@"dealloc") fromClass:[NSObject class] blockImp:^(id this) {
+                [ret deleteClass];
+            }];
+        }
         objc_registerClassPair(ret);
     }
     
@@ -123,6 +129,13 @@ id MM_CREATE_ALWAYS(void(^block)(__strong Class class))
     
     NSString *reason = [NSString stringWithFormat: @"Method (%@) can't be removed. Method not found",NSStringFromSelector(sel)];
     @throw [NSException exceptionWithName:kMMExeptionMethodError reason:reason userInfo:@{kMMExeptionSelector:NSStringFromSelector(sel)}];
+}
+
++ (void)deleteClass
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        objc_disposeClassPair(self);
+    });
 }
 
 @end

@@ -28,5 +28,6 @@ id MM_CREATE_ALWAYS(void(^block)(__strong Class class));
 + (void)overrideMethod:(SEL)sel blockImp:(id)block;
 + (void)removeMethod:(SEL)sel __attribute__((deprecated));
 + (void)removeClassMethod:(SEL)sel __attribute__((deprecated));
++ (void)deleteClass;
 
 @end
