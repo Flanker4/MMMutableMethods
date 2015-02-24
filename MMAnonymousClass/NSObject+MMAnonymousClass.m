@@ -57,7 +57,7 @@ id MM_CREATE_ALWAYS(void(^block)(__strong Class class))
             IMP newImp = imp_implementationWithBlock(^(id this) {
                 [ret deleteClass];
             });
-            [ret addMethod:sel fromClass:[NSObject class] blockImp:^(id this){
+            [ret overrideMethod:sel blockImp:^(id this){
                 ((void(*)(id))newImp)(this);
                 ((void(*)(id))imp)(this);
             }];
@@ -68,38 +68,34 @@ id MM_CREATE_ALWAYS(void(^block)(__strong Class class))
     return ret;
 }
 
-+ (void)addMethod:(SEL)sel fromProtocol:(Protocol *)p blockImp:(id)block {
-    struct objc_method_description descript;
-    for (NSNumber *b in @[@NO,@YES]) {
-        descript = protocol_getMethodDescription(p, sel, b.boolValue, YES);
-        if (descript.types) {
-            [self addMethod:sel blockImp:block types:descript.types];
-            return;
-        }
++ (void)addMethod:(SEL)sel fromProtocol:(Protocol *)proto blockImp:(id)block {
+    struct objc_method_description descript = protocol_getMethodDescription(proto, sel, NO, YES);
+    if (descript.types == nil)
+        descript = protocol_getMethodDescription(proto, sel, YES, YES);
+    if (descript.types) {
+        [self addMethod:sel blockImp:block types:descript.types];
+        return;
     }
     
-    NSString *reason = [NSString stringWithFormat:@"Method (%@) can't be found. Please, check protocol",NSStringFromSelector(sel)];
+    NSString *reason = [NSString stringWithFormat:@"Method (%@) can't be found. Please, check %@ protocol",NSStringFromSelector(sel),NSStringFromProtocol(proto)];
     @throw [NSException exceptionWithName:kMMExeptionMethodError reason:reason userInfo:@{kMMExeptionSelector:NSStringFromSelector(sel)}];
 }
 
 + (void)addMethod:(SEL)sel fromClass:(Class)class blockImp:(id)block {
     Method method = class_getInstanceMethod(class, sel);
-    [self addMethod:sel blockImp:block types:method_getTypeEncoding(method)];
+    if (method) {
+        const char *types = method_getTypeEncoding(method);
+        [self addMethod:sel blockImp:block types:types];
+        return;
+    }
+    
+    NSString *reason = [NSString stringWithFormat:@"Method (%@) can't be found. Please, check %@ class",NSStringFromSelector(sel),NSStringFromClass(class)];
+    @throw [NSException exceptionWithName:kMMExeptionMethodError reason:reason userInfo:@{kMMExeptionSelector:NSStringFromSelector(sel)}];
 }
 
 + (void)addMethod:(SEL)sel blockImp:(id)block types:(const char *)types {
-    Method method = class_getInstanceMethod(self, sel);
-    if (method) {
-        [self overrideMethod:sel blockImp:block];
-        return;
-    } else {
-        IMP newImp = imp_implementationWithBlock(block);
-        if (class_addMethod(self, sel, newImp, types))
-            return;
-    }
-    
-    NSString *reason = [NSString stringWithFormat:@"Method (%@) can't be added. Please, check params",NSStringFromSelector(sel)];
-    @throw [NSException exceptionWithName:kMMExeptionMethodError reason:reason userInfo:@{kMMExeptionSelector:NSStringFromSelector(sel)}];
+    IMP newImp = imp_implementationWithBlock(block);
+    class_replaceMethod(self, sel, newImp, types);
 }
 
 + (void)overrideMethod:(SEL)sel blockImp:(id)block {
@@ -109,7 +105,7 @@ id MM_CREATE_ALWAYS(void(^block)(__strong Class class))
         return;
     }
     
-    NSString *reason = [NSString stringWithFormat:@"Method (%@) can't be added. Please, check params",NSStringFromSelector(sel)];
+    NSString *reason = [NSString stringWithFormat:@"Method (%@) can't be overriden. It does not exists",NSStringFromSelector(sel)];
     @throw [NSException exceptionWithName:kMMExeptionMethodError reason:reason userInfo:@{kMMExeptionSelector:NSStringFromSelector(sel)}];
 }
 
