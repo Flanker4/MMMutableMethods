@@ -8,31 +8,26 @@
 
 #import <Foundation/Foundation.h>
 
-#define MM_DEFAULT_REUSE_ID  [NSString stringWithFormat:@"%s_%d", __PRETTY_FUNCTION__, __LINE__]
-
-// Excceptions
 extern NSString *const kMMExeptionMethodError;
 extern NSString *const kMMExeptionSelector;
 
-// C help functions
-extern inline BOOL OVERRIDE(SEL sel, id blockIMP);
-extern inline BOOL ADD_METHOD(SEL sel, Protocol *p, id blockIMP);
-extern inline BOOL ADD_METHOD_C(SEL sel, Class c, id blockIMP);
+#define MM_REUSE [NSString stringWithFormat:@"MMAnonymousClass_%s_%d", __PRETTY_FUNCTION__, __LINE__]
 
-// Category
-@interface NSObject(MMAnonymousClass)
+Class MM_CREATE_CLASS(NSString *reuseID, Class superclass, void(^block)(__strong Class class));
+Class MM_CREATE_CLASS_ALWAYS(Class superclass, void(^block)(__strong Class class));
+id MM_CREATE(NSString *reuseID, void(^block)(__strong Class class));
+id MM_CREATE_ALWAYS(void(^block)(__strong Class class));
 
-// MARK: - DEPRECATED!
-- (id)modifyMethods:(void(^)())blockOv __attribute__((deprecated));
-- (id)addMethod:(SEL)sel fromProtocol:(Protocol *)p isRequired:(BOOL)isReq blockImp:(id)block __attribute__((deprecated));
-- (id)overrideMethod:(SEL)sel blockImp:(id)block __attribute__((deprecated));
-- (IMP)removeInstanceMethod:(SEL)sel;
+@interface NSObject (MMAnonymousClass)
 
-// MARK: - Allowed
-+ (id)allocAnon:(void(^)())blockOv __attribute__((deprecated));
-+ (id)allocAnonWithReuserID:(NSString*)reuseID :(void(^)())blockOv;
-+ (id)newInstAnon:(void(^)())blockOv __attribute__((deprecated));
-+ (id)newInstAnonWithReuseID:(NSString*)reuseID :(void(^)())blockOv;
-+ (Class)anonWithReuserID:(NSString*)reuseID;
++ (Class)subclassWithReuseID:(NSString *)reuseID
+                 configBlock:(void(^)(Class))block;
+
++ (void)addMethod:(SEL)sel fromProtocol:(Protocol *)proto blockImp:(id)block;
++ (void)addMethod:(SEL)sel fromClass:(Class)class blockImp:(id)block;
++ (void)overrideMethod:(SEL)sel blockImp:(id)block;
++ (void)removeMethod:(SEL)sel __attribute__((deprecated));
++ (void)removeClassMethod:(SEL)sel __attribute__((deprecated));
++ (void)deleteClass;
 
 @end

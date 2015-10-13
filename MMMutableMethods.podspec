@@ -16,12 +16,12 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "MMMutableMethods"
-  s.version      = "0.0.2"
+  s.version      = "0.0.7"
   s.summary      = "Anonymous classes for Objective-C"
 
   s.description  = <<-DESC
-                   Simple library to declare anonimous classes in Objective-C runtime,
-                   override methods for instances of classes and add methods for instances of classes.
+                   Simple library to declare anonymous classes in Objective-C
+                   runtime, dynamically add methods and class methods.
                    DESC
 
   s.homepage     = "https://github.com/Flanker4/MMMutableMethods"
@@ -74,7 +74,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/Flanker4/MMMutableMethods.git", :tag => "0.0.2" }
+  s.source       = { :git => "https://github.com/Flanker4/MMMutableMethods.git", :tag => "0.0.7" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
